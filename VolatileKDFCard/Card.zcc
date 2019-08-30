@@ -1,0 +1,17 @@
+[BasicCard]
+ConfigFile=Pro\ZC56_M.zcf
+
+[Card Reader]
+PhysicalReader=100
+VirtualReader=201
+
+[Compiler]
+ImageFile=false
+IncludePath=C:\Program Files\BasicCardV8\Lib;C:\Program Files\BasicCardV8\Inc
+ListingFile=false
+MapFile=false
+SourceFile=Card.bas
+
+[Window Options]
+IOToolTipEnabled=true
+ShowRegisters=Auto
