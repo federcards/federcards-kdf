@@ -54,7 +54,7 @@ end function
 
 ' Verifies a challenge
 function session_start(password as string) as byte
-    if password <> session_challenge then
+    if password <> session_password then
         session_start = 0
         exit function
     end if
