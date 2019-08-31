@@ -8,6 +8,10 @@ Rem that ZeitControl GmbH has no warranty, obligations or liability
 Rem for any Sample Application Files.
 Rem ------------------------------------------------------------------
 
-Declare Command &H88 &H00 HelloWorld(LC=0, Data as String)
-Declare Command &H88 &H02 WriteData(Data as String, Disable LE)
-Declare Command &H88 &H04 ReadData(LC=0, Data as String)
+
+declare command &H88 &H64 COMMAND_READ_ERROR(data as string)
+declare command &H88 &H00 COMMAND_FACTORY_RESET(data as string)
+declare command &H88 &H02 COMMAND_GET_CHALLENGE(data as string)
+declare command &H88 &H04 COMMAND_START_SESSION(data as string)
+declare command &H88 &H06 COMMAND_UNLOCK_CARD(data as string)
+declare command &H88 &H08 COMMAND_GET_PASSWORD(data as string)

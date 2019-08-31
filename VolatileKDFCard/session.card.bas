@@ -23,6 +23,9 @@ function session_replace_authkey(request as string) as byte
         session_replace_authkey = 0
     else
         session_authkey = newkey
+        session_challenge = ""
+        session_password = ""
+        session_tempkey = ""
         session_replace_authkey = 1
     end if
 end function
@@ -54,7 +57,11 @@ end function
 
 ' Verifies a challenge
 function session_start(password as string) as byte
-    if password <> session_password then
+    if session_is_started() = 1 then
+        session_start = 1
+        exit function
+    end if
+    if 0 = strcmp(password, session_password) then
         session_start = 0
         exit function
     end if
