@@ -54,10 +54,12 @@ command &H88 &H00 COMMAND_FACTORY_RESET(data as string)
     authkeyRet = session_replace_authkey(data)
     if authkeyRet = 0 then
         ' failed
-        die_with_error("Bad request doing factory reset.") : exit command
+        data = "Bad request doing factory reset."
+        die_with_error(data) : exit command
     end if
     ' Reset authorized. Continue to reset KDF service.
     call kdfservice_reset()
+    data = "OK"
 end command
 
 
@@ -93,9 +95,10 @@ end command
 
 command &H88 &H04 COMMAND_START_SESSION(data as string)
     if session_start(data) = 0 then
-        die_with_error("Start session failed.") : exit command
+        data = "Start session failed."
+        die_with_error(data) : exit command
     end if
-    data = ""
+    data = "OK"
 end command
 
 
@@ -117,14 +120,17 @@ end command
 command &H88 &H06 COMMAND_UNLOCK_CARD(data as string)
     private password as string
     if session_is_started() = 0 then
-        die_with_error("Session not started.") : exit command
+        data = "Session not started."
+        die_with_error(data)
+        exit command
     end if
     password = session_decrypt(data)
     if password = "" then
-        die_with_error("Communication error. Encryption error?") : exit command
+        data = "Communication error. Encryption error?"
+        die_with_error(data) : exit command
     end if
+    data = "OK"
     kdfservice_rotate(password)
-    data = ""
 end command
 
 ' ******************************************************************************
@@ -134,19 +140,19 @@ end command
 ' password derived with the internal KDF service. The KDF service generates this
 ' password with its internal secret, which is protected by the user password.
 '
-' Input data is treated as session encrypted nonce.
+' Input data is treated as session encrypted salt.
 
 command &H88 &H08 COMMAND_GET_PASSWORD(data as string)
-    private nonce as string
+    private salt as string
     private result as string
     if session_is_started() = 0 then
         die_with_error("Session not started.") : exit command
     end if
-    nonce = session_decrypt(data)
-    if nonce = "" then
+    salt = session_decrypt(data)
+    if salt = "" then
         die_with_error("Communication error. Encryption error?") : exit command
     end if
-    result = kdfservice(nonce)
+    result = kdfservice(salt)
     if result = "" then
         die_with_error("Must unlock first.") : exit command
     end if

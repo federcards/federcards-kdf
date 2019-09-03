@@ -6,7 +6,7 @@ function session_answer_challenge(challenge as string, authkey as string) as byt
     print "Calc answer   =", str2hex(password)
     
     call COMMAND_START_SESSION(password)
-    if SW1SW2 = &H9000 then
+    if password = "OK" then
         print "Session challenge passed."
         session_tempkey = HMAC_SHA1("key" + authkey, challenge)
         session_answer_challenge = 1

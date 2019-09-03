@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Federcard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/6.5.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/6.5.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/6.5.0/firebase-database.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+<body> <div id="logged-in">
+
+<div class="dialog-head">
+    <span id="vue-username">{{ username }}</span>
+</div>
+
+
+<div id="vue-cardlist" class="dialog-list">
+    
+    <div v-if="cards.length" class="row">
+        You have registered following cards.
+    </div>
+
+    <div v-if="cards.length == 0" class="row">
+        Currently no cards registered.
+    </div>
+
+    <div v-for="card in cards" class="row topline">
+        <input
+            type="radio"
+            v-bind:data-cardid="card.id"
+            v-bind:id="'menu-' + card.id"
+        >
+        <label v-bind:for="'menu-' + card.id">
+            <strong>{{ card.title }}</strong>
+        </label>
+        <button
+            v-if="allowDelete"
+            v-bind:data-cardid="card.id"
+            class="button-delete">Delete</button>
+    </div>
+
+</div>
+
+
+
+<div id="retrieve">
+    You are about to authorize the access of a smart card.
+    <strong>Do this only when you have already inserted the card, and prompted
+    by the terminal program!</strong>
+    Choose the smart card from above, then press button below to confirm.
+    <div class="button-row">
+        <button type="button" name="access">Access this Card</button>
+        <button type="button" name="cancel">Cancel and Logout</button>
+    </div>
+</div> <!-- retrieve -->
+
+
+
+<div id="manage">
+
+    To add a card, copy and paste your card's authentication key below.
+    The key should come together with your smart card.
+
+    <div class="button-row">
+        Add a card:
+        <input type="text" placeholder="Authentication key..." />
+        <button type="button" name="addcard">Add</button>
+    </div>
+
+    Once the authentication key is added, you can destroy its paper record.
+
+
+</div> <!-- manage -->
+
+</div> </body>
+<script src="script/main.js"></script>
+</html>

@@ -1,10 +1,6 @@
 [BasicCard]
 ConfigFile=Pro\ZC56_M.zcf
 
-[Breakpoints]
-Breakpoint0=File(&quote;Y:/VolatileKDFCard/kdfservice.card.bas&quote;,89)
-Breakpoint1=File(&quote;Y:/VolatileKDFCard/kdfservice.card.bas&quote;,80)
-
 [Card Reader]
 PhysicalReader=100
 VirtualReader=201
@@ -24,14 +20,14 @@ Length=46
 Visible=false
 
 [EEPROM]
-Block0=B^(Cn3&amp;zdFRp:}LmhYNi%%Bv=+d.^jAj&lt;bIvdqKI&amp;D&gt;ulnqvIlfrg[r&gt;k3:hf!wg0hSR.aq
-Block1=.WgJ&apos;gX7CWz2EtpK/&gt;E%U[h.aj~:W;n&lt;n!jN?o,qVhdqoC2K,lsBW*P`O#fBJx:IGcHGi*i
-Block2=2v:q9t[h%3l5jlEe27`jbvJj^t+c&quote;Uk&apos;_&quote;d.(QM[&apos;YWd^a[-^yRVP^P;2;M*;;Ogq=We-_m
-Block3=&quote;V/.~jm[
-CRC=0x5d2ef627
-Length=193
-MaskCRC=3425281360
-StartCRC=469921388
+Block0=B^%x&lt;H2;Tp3wK|luK~sREB_qRFSkR4X3SNg6bt7e~[tCwul]XH()|3c~6Nzzh&amp;K`|Syg{p*
+Block1=&quote;yjW-5(9&amp;#@]FARe$S.&apos;*Nh@M/nr&amp;/Z{a4caYho$(p0Th&lt;3ZK;bOb8,f3^h4*19&lt;cY/g9A(
+Block2=(f69NAc[=xZ9W,?L|Lf&amp;@pqy&apos;wx+7NJfq17@lo/%HD/-dv)WMfLPzK0^$g&apos;#,,&lt;gTV5-I~[
+Block3=)RPb^PdyM
+CRC=0xd061a1d1
+Length=197
+MaskCRC=704853294
+StartCRC=3857460350
 
 [Files Window]
 Block0=&quote;=my,fAB7L,_jjgu_+=LR*|&quote;L9:PS4]U6Og+$)Bp2G97rgrVDtb#jo:C

@@ -90,18 +90,18 @@ function kdfservice_rotate(password as string) as string
 end function
 
 
-' Provide KDF service: generate a pseudo-random password with given nonce.
+' Provide KDF service: generate a pseudo-random password with given salt.
 ' The generated password in raw has 32 bytes(256 bits). It's up to the user, to
 ' convert this password into a human-friendly format.
-function kdfservice(nonce as string) as string
+function kdfservice(salt as string) as string
     if kdfservice_secretkey_memory = "" then
         ' Must unlock first
         kdfservice = ""
         exit function
     end if
     kdfservice = Sha256Hash(_ 
-        HMAC_SHA1(kdfservice_secretkey_memory, nonce + ".part1") + _ 
-        HMAC_SHA1(kdfservice_secretkey_memory, nonce + ".part2"))
+        HMAC_SHA1(kdfservice_secretkey_memory, salt + ".part1") + _ 
+        HMAC_SHA1(kdfservice_secretkey_memory, salt + ".part2"))
 end function
 
 

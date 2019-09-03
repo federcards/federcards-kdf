@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "$uid": {
+      "cards": {
+        ".read": "$uid == auth.uid",
+        "$cardid": {
+          ".write": "$uid == auth.uid",
+          ".validate": "newData.isString() && newData.val().length <= 140"          
+        }
+      },
+      "keys": {
+        "$cardid": {
+            ".read": false,
+            ".write": "$uid == auth.uid && root.child($uid).child('cards').hasChild($cardid)",
+            ".validate": "newData.isString() && newData.val().length == 64"
+          }
+      	}
+      }
+  }
+}

@@ -43,21 +43,65 @@ Call WaitForCard()
 ResetCard : Call CheckSW1SW2()
 
 
-print "Reset auth key to <TEST AUTH KEY>"
-data = crypto_encrypt(FACTORY_KEY, "TEST AUTH KEY")
+' A failed factory reset
+data = ""
 call COMMAND_FACTORY_RESET(data) : call checkerror()
-print "...done"
+
+
+
+if 0 then
+
+    print "Reset auth key to <TEST AUTH KEY>"
+    data = crypto_encrypt(FACTORY_KEY, "TEST AUTH KEY")
+    call COMMAND_FACTORY_RESET(data) : call checkerror()
+    if data = "OK" then
+        print "...done"
+    else
+        print "...failed: " + data
+        goto died
+    end if
+
+end if
+
 
 
 public challenge as string
 
 print "Try to answer challenge with wrong auth key"
 call COMMAND_GET_CHALLENGE(challenge) : call checkerror()
-print "Got challenge =", str2hex(challenge)
-print "wrong, should be 0:", dec2str(session_answer_challenge(challenge, "wrong key"))
+if session_answer_challenge(challenge, "wrong key") <> 0 then
+    print "> Error. Should be 0."
+    goto died
+end if
 call COMMAND_GET_CHALLENGE(challenge) : call checkerror()
-print "Got challenge =", str2hex(challenge)
-print "right, should be 1:", dec2str(session_answer_challenge(challenge, "TEST AUTH KEY"))
+if session_answer_challenge(challenge, "TEST AUTH KEY") <> 1 then
+    print "> Error. Should be 1."
+    goto died
+end if
+
+
+print "Try to unlock card."
+data = session_encrypt("test")
+call COMMAND_UNLOCK_CARD(data) : call CheckSW1SW2()
+if data <> "OK" then
+    print "Failed unlocking card: " + data
+    goto died
+else
+    print "Card unlocked."
+end if
+
+
+
+private password as string
+print "Try to get a password."
+data = session_encrypt("test salt")
+call COMMAND_GET_PASSWORD(data) : call checkerror()
+print "Command sent."
+print SW1SW2
+print "Encrypted response: " + str2hex(data)
+password = session_decrypt(data)
+print "Password = " + str2hex(password)
+
 
 
 
