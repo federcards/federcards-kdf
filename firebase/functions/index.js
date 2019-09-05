@@ -5,25 +5,18 @@ const auth = admin.auth();
 const dbRoot = admin.database().ref();
 const crypto = require("crypto");
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
 
-exports.getAnswer = functions.https.onRequest(async (request, response) => {
-    const token = request.body.token, 
-          card = request.body.card,
-          challenge = request.body.challenge;
+exports.getAnswer = functions.https.onCall(async (data, context) => {
+    const uid = context.auth.uid,
+          challenge = data.challenge,
+          card = data.card;
 
-    var uid, bufChallenge, authkey;
+    var bufChallenge, authkey;
 
     try{
     
         if (!(
             typeof card == "string" &&
-            typeof token == "string" &&
             typeof challenge == "string"
         ))
             throw Exception();
@@ -31,15 +24,7 @@ exports.getAnswer = functions.https.onRequest(async (request, response) => {
         bufChallenge = new Buffer.from(challenge, "hex");
         if (bufChallenge.length != 32) throw Exception();
     } catch(e){
-        return response.status(400).send("Invalid input.");
-    }
-
-    try {
-        const decodedToken = await auth.verifyIdToken(token);
-        uid = decodedToken.uid;
-    } catch(e){
-        response.status(401).send("Access denied :(");
-        return;
+        return {"error": "Invalid input."}
     }
 
     try{
@@ -47,7 +32,7 @@ exports.getAnswer = functions.https.onRequest(async (request, response) => {
         authkey = await keypath.once("value");
         if(authkey === null) throw Exception();
     } catch(e){
-        return response.status(404).send("This card is not registered.")
+        return {"error": "This card is not registered."}
     }
 
     const passwordHMAC = crypto.createHmac('sha1', 'password' + authkey),
@@ -56,8 +41,8 @@ exports.getAnswer = functions.https.onRequest(async (request, response) => {
     const password = passwordHMAC.update(bufChallenge).digest('hex'),
           tempkey  = keyHMAC.update(bufChallenge).digest('hex');
 
-    response.status(200).send({
+    return {
         "password": password,
         "tempkey": tempkey,
-    });
+    };
 });

@@ -62,8 +62,27 @@ hr {
     margin: 0 0.5em 0 0;
 }
 
+.button-row button:disabled {
+    color: #999999;
+}
+
+.button-row button:hover {
+    background: #FFCC00;
+    color: black;
+}
+
+.button-row button:focus {
+    background: red;
+    color: black;
+}
+
 button.button-delete {
     border: none;
     color: red;
     float: right;
+}
+
+
+#response-zone {
+    display: none;
 }

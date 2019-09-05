@@ -10,9 +10,37 @@ var vueCardlist = new Vue({
     data: {
         cards: [],
         allowDelete: false,
+    },
+    methods: {
+        recalculateButtonAvailability: recalculateButtonAvailability,
     }
 });
 
+function recalculateButtonAvailability(){
+    $('button[name="access"]').attr(
+        "disabled",
+        ($('#vue-cardlist').find('input[type="radio"]:checked').length != 1)
+    );
+}
+
+
+async function onButtonAccessClicked(){
+    const cardID = $('input[type="radio"]:checked').attr('data-cardid');
+    const request = {
+        "token": $(this).data("token"),
+        "card": cardID,
+        "challenge": $(this).data("challenge"),
+    };
+    const answer = await firebase.functions()
+            .httpsCallable("getAnswer")(request).data;
+
+    console.log(JSON.stringify(answer));
+    var credentialdiv = $("<div>", {id: "credential"})
+        .text(JSON.stringify(answer))
+        .appendTo($("#response-zone").empty())
+    ;
+    $("#credential").attr("data-ready", "1");
+}
 
 
 
@@ -54,6 +82,7 @@ async function onLoggedIn(user){
         $('button[name="access"]')
             .data('challenge', challenge)
             .data('token', token)
+            .click(onButtonAccessClicked)
         ;
         $("#retrieve").show();
         $("#manage").hide();

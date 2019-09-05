@@ -12,6 +12,7 @@
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/6.5.0/firebase-auth.js"></script>
     <script defer src="/__/firebase/6.5.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/6.5.0/firebase-functions.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
@@ -40,6 +41,7 @@
             type="radio"
             v-bind:data-cardid="card.id"
             v-bind:id="'menu-' + card.id"
+            v-on:click="recalculateButtonAvailability"
         >
         <label v-bind:for="'menu-' + card.id">
             <strong>{{ card.title }}</strong>
@@ -60,7 +62,7 @@
     by the terminal program!</strong>
     Choose the smart card from above, then press button below to confirm.
     <div class="button-row">
-        <button type="button" name="access">Access this Card</button>
+        <button type="button" name="access" disabled="1">Access this Card</button>
         <button type="button" name="cancel">Cancel and Logout</button>
     </div>
 </div> <!-- retrieve -->
@@ -83,6 +85,9 @@
 
 </div> <!-- manage -->
 
+
+
+<div id="response-zone"></div><!-- for communicating with terminal -->
 </div> </body>
 <script src="script/main.js"></script>
 </html>

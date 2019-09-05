@@ -24,6 +24,10 @@ Option Explicit
 #include factory_key.bas
 
 
+
+
+
+
 public data as string
 
 
@@ -42,6 +46,9 @@ Call WaitForCard()
 ' Reset the card and check status code SW1SW2
 ResetCard : Call CheckSW1SW2()
 
+
+print str2hex(crypto_encrypt("encrypt key", "secret message"))
+goto died
 
 ' A failed factory reset
 data = ""

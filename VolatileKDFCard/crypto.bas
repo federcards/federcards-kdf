@@ -44,7 +44,7 @@ sub xor_block(byref working_block as string, byref with_block as string)
 end sub
 
 
-sub crypto_ctr(byref k as string, byval iv as string, byref message as string)
+sub crypto_ctr(byref k as string*32, byval iv as string, byref message as string)
     private i_block as string*16
     private o_block as string*16
     private i as byte
