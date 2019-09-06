@@ -78,12 +78,15 @@ elif args.access:
             
             credential = """{"password": "%s", "tempkey": "%s"}""" % (
                 password, tempkey)
-
-        credential = json.loads(credential)
-        print(cio.startSession(
-            bytes.fromhex(credential["password"]),
-            bytes.fromhex(credential["tempkey"])
-        ))
+        try:
+            credential = json.loads(credential)
+            print(cio.startSession(
+                bytes.fromhex(credential["password"]),
+                bytes.fromhex(credential["tempkey"])
+            ))
+        except:
+            print("Failed to unlock the card.")
+            exit()
 
         print("-" * 40)
         print("Ready to unlock the card. Caution: password must be correct!")

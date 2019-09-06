@@ -31,8 +31,8 @@ async function onButtonAccessClicked(){
         "card": cardID,
         "challenge": $(this).data("challenge"),
     };
-    const answer = await firebase.functions()
-            .httpsCallable("getAnswer")(request).data;
+    const answer = (await firebase.functions()
+            .httpsCallable("getAnswer")(request)).data;
 
     console.log(JSON.stringify(answer));
     var credentialdiv = $("<div>", {id: "credential"})

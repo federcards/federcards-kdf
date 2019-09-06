@@ -12,7 +12,7 @@
         "$cardid": {
             ".read": false,
             ".write": "$uid == auth.uid && root.child($uid).child('cards').hasChild($cardid)",
-            ".validate": "newData.isString() && newData.val().length == 64"
+            ".validate": "newData.isString() && newData.val().length <= 64"
           }
       	}
       }

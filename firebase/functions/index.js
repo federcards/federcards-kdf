@@ -29,14 +29,24 @@ exports.getAnswer = functions.https.onCall(async (data, context) => {
 
     try{
         const keypath = dbRoot.child(uid).child("keys").child(card);
-        authkey = await keypath.once("value");
+        authkey = (await keypath.once("value")).val();
         if(authkey === null) throw Exception();
+        authkey = Buffer.from(authkey, "hex");
     } catch(e){
-        return {"error": "This card is not registered."}
+        return {"error": "This card is not properly registered."};
     }
 
-    const passwordHMAC = crypto.createHmac('sha1', 'password' + authkey),
-          keyHMAC = crypto.createHmac('sha1', 'key' + authkey);
+    const k1 = Buffer.concat([
+        Buffer.from("password"),
+        authkey
+    ]);
+    const k2 = Buffer.concat([
+        Buffer.from("key"),
+        authkey
+    ]);
+
+    const passwordHMAC = crypto.createHmac('sha1', k1),
+          keyHMAC = crypto.createHmac('sha1', k2);
 
     const password = passwordHMAC.update(bufChallenge).digest('hex'),
           tempkey  = keyHMAC.update(bufChallenge).digest('hex');
